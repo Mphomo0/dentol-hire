@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { PrintButton } from "@/components/admin/print-button";
@@ -37,10 +38,11 @@ export default async function InvoiceDetailPage({
       <article className="print-sheet rounded-2xl border border-line bg-white p-8 text-[#111] shadow-2xl sm:p-12">
         <header className="flex flex-wrap items-start justify-between gap-6 border-b-2 border-[#0079f5] pb-8">
           <div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src="/images/logo/logo.png"
               alt="Dantol Hire"
+              width={112}
+              height={36}
               className="h-9 w-auto"
             />
             <p className="mt-2 max-w-[240px] text-xs leading-relaxed text-neutral-500">

@@ -1,6 +1,3 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   AlertTriangle,
@@ -23,45 +20,13 @@ import {
   RENTAL_STATUS_META,
   daysBetween,
 } from "@/lib/format";
-import type {
-  Invoice,
-  Quote,
-  QuoteRequest,
-  Rental,
-} from "@/lib/types";
+import { store } from "@/lib/store";
 
 export default function AdminDashboard() {
-  const [rentals, setRentals] = useState<Rental[]>([]);
-  const [requests, setRequests] = useState<QuoteRequest[]>([]);
-  const [quotes, setQuotes] = useState<Quote[]>([]);
-  const [invoices, setInvoices] = useState<Invoice[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    Promise.all([
-      fetch("/api/quote-requests").then((r) => r.json()),
-      fetch("/api/rentals").catch(() => []),
-    ])
-      .then(([reqData]) => {
-        setRequests(reqData);
-        return fetch("/api/quotes").then((r) => r.json());
-      })
-      .then((q) => {
-        setQuotes(q);
-        return fetch("/api/invoices").then((r) => r.json());
-      })
-      .then((inv) => {
-        setInvoices(inv);
-        setLoading(false);
-      });
-
-    fetch("/api/rentals")
-      .then((r) => r.json())
-      .then(setRentals)
-      .catch(() => {});
-  }, []);
-
-  void loading;
+  const rentals = store.rentals;
+  const requests = store.quoteRequests;
+  const quotes = store.quotes;
+  const invoices = store.invoices;
 
   const openRentals = rentals.filter((r) => !r.returnedDate);
   const overdue = openRentals.filter((r) => rentalStatus(r) === "overdue");
